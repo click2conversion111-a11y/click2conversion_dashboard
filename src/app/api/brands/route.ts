@@ -1,16 +1,11 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { getDb } from '@/lib/db'
 
 export async function GET() {
   try {
-    const supabase = await createClient()
-    const { data, error } = await supabase
-      .from('brands')
-      .select('*')
-      .order('created_at', { ascending: true })
-
-    if (error) throw error
-    return NextResponse.json(data)
+    const db = await getDb()
+    const { rows } = await db.query('SELECT * FROM brands ORDER BY created_at ASC')
+    return NextResponse.json(rows)
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 })
   }
@@ -18,22 +13,15 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json()
-    const supabase = await createClient()
-    const { data, error } = await supabase
-      .from('brands')
-      .insert({
-        name: body.name,
-        color: body.color,
-        meta: body.meta ?? null,
-        google: body.google ?? null,
-        shopify: body.shopify ?? null,
-      })
-      .select()
-      .single()
-
-    if (error) throw error
-    return NextResponse.json(data)
+    const { name, color, meta, google, shopify } = await req.json()
+    const db = await getDb()
+    const { rows } = await db.query(
+      `INSERT INTO brands (name, color, meta, google, shopify)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [name, color, meta ?? null, google ?? null, shopify ?? null]
+    )
+    return NextResponse.json(rows[0])
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 })
   }

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@types/pg": "^8.11.10",
+    "pg": "^8.13.3",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.103.2",
     "@tailwindcss/postcss": "^4",
