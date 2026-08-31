@@ -18,9 +18,9 @@ export default function CreateBrandModal({ onClose, onCreated }: Props) {
   const [name, setName] = useState('')
   const [color, setColor] = useState(PRESET_COLORS[0])
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     if (!name.trim()) return
-    const brand = createBrand(name.trim(), color)
+    const brand = await createBrand(name.trim(), color)
     onCreated(brand.id)
   }
 

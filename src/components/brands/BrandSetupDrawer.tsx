@@ -491,7 +491,7 @@ export default function BrandSetupDrawer({ brand, onClose }: Props) {
   const { updateBrand } = useDashboardStore()
 
   const save = (patch: Partial<Brand>) => {
-    updateBrand(brand.id, patch)
+    updateBrand(brand.id, patch).catch(console.error)
   }
 
   // Get latest brand state from store

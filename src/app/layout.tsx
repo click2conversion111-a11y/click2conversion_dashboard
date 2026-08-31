@@ -10,12 +10,16 @@ export const metadata: Metadata = {
 }
 
 import { AuthProvider } from '@/components/providers/AuthProvider'
+import { BrandsLoader } from '@/components/providers/BrandsLoader'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
       <body className="min-h-full bg-[#0F1117] text-[#F0F2FF] antialiased">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <BrandsLoader />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )
